@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Air WTP | CV Sumber Manunggal Abadi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>PEMBAYARAN AIR WTP</h1>
+        <p>CV SUMBER MANUNGGAL ABADI</p>
+    </div>
+
+    <form id="paymentForm" class="form">
+
+        <div class="row">
+            <div class="input-group">
+                <label>Nama Pelanggan</label>
+                <input type="text" required placeholder="Nama lengkap">
+            </div>
+
+            <div class="input-group">
+                <label>Blok Rumah</label>
+                <input type="text" required placeholder="Blok A No. 12">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-group">
+                <label>Periode Tagihan</label>
+                <input type="month" required>
+            </div>
+
+            <div class="input-group">
+                <label>Jatuh Tempo Pembayaran</label>
+                <input type="date" required>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Total Pembayaran (Rp)</label>
+            <input type="number" required placeholder="Contoh: 150000">
+        </div>
+
+        <div class="input-group">
+            <label>Metode Pembayaran</label>
+            <select required>
+                <option value="">-- Pilih Metode --</option>
+                <optgroup label="Bank">
+                    <option>BCA</option>
+                    <option>BRI</option>
+                    <option>BNI</option>
+                    <option>Mandiri</option>
+                </optgroup>
+                <optgroup label="E-Wallet">
+                    <option>DANA</option>
+                    <option>OVO</option>
+                    <option>GoPay</option>
+                    <option>ShopeePay</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Upload Bukti Pembayaran</label>
+            <input type="file" accept="image/*" required onchange="previewImage(event)">
+            <div class="preview" id="preview"></div>
+        </div>
+
+        <button type="submit">KIRIM PEMBAYARAN</button>
+
+    </form>
+
+    <div class="footer">
+        © 2026 CV Sumber Manunggal Abadi • Sistem Pembayaran Air WTP
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
