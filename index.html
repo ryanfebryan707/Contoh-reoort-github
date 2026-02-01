@@ -3,82 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran Air WTP | CV Sumber Manunggal Abadi</title>
+    <title>WTP CV SUMBER MANUNGGAL ABADI</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>PEMBAYARAN AIR WTP</h1>
-        <p>CV SUMBER MANUNGGAL ABADI</p>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                CV SUMBER MANUNGGAL <span>ABADI</span>
+            </div>
+            <nav>
+                <ul id="menu-public">
+                    <li><a onclick="app.navigate('home')">Beranda</a></li>
+                    <li><a onclick="app.navigate('login')">Masuk</a></li>
+                    <li><a onclick="app.navigate('contact')">Kontak</a></li>
+                </ul>
+                <ul id="menu-user" class="hidden">
+                    <li><a onclick="app.navigate('user-dashboard')">Tagihan Saya</a></li>
+                    <li><a onclick="app.logout()" class="btn-logout">Keluar</a></li>
+                </ul>
+                <ul id="menu-admin" class="hidden">
+                    <li><a onclick="app.navigate('admin-dashboard')">Dashboard Admin</a></li>
+                    <li><a onclick="app.logout()" class="btn-logout">Keluar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- HALAMAN 1: BERANDA -->
+        <section id="home" class="active-section">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Sistem Informasi & Pembayaran Air WTP</h1>
+                    <p>Transaksi mudah, bukti transparan, pengingat otomatis via WhatsApp.</p>
+                    <button onclick="app.navigate('login')" class="btn btn-primary btn-lg">Cek Tagihan Sekarang</button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="card feature-card">
+                    <h3>📄 Bukti Tagihan Digital</h3>
+                    <p>Pelanggan dapat melihat foto meter/tagihan dari Admin.</p>
+                </div>
+                <div class="card feature-card">
+                    <h3>📱 Pembayaran Lengkap</h3>
+                    <p>BCA, DANA, QRIS, atau Tunai di kantor.</p>
+                </div>
+                <div class="card feature-card">
+                    <h3>👁️ Verifikasi Gambar</h3>
+                    <p>Admin melihat bukti transfer, User melihat bukti tagihan.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN 2: LOGIN -->
+        <section id="login">
+            <div class="card login-card">
+                <div class="tabs">
+                    <button class="tab active" onclick="app.switchTab('pelanggan')">Pelanggan</button>
+                    <button class="tab" onclick="app.switchTab('admin')">Admin</button>
+                </div>
+
+                <div id="form-pelanggan" class="form-group">
+                    <h2>Login Pelanggan</h2>
+                    <div class="input-field">
+                        <label>ID Pelanggan</label>
+                        <input type="text" id="login-id" placeholder="Contoh: PEL001">
+                    </div>
+                    <div class="input-field">
+                        <label>Nomor HP</label>
+                        <input type="tel" id="login-phone" placeholder="Contoh: 08123456789">
+                    </div>
+                    <button onclick="app.loginUser()" class="btn btn-primary btn-full">Masuk</button>
+                    <p class="text-hint">Demo ID: PEL001 | HP: 08123456789</p>
+                </div>
+
+                <div id="form-admin" class="form-group hidden">
+                    <h2>Login Admin</h2>
+                    <div class="input-field">
+                        <label>Username</label>
+                        <input type="text" id="admin-user" value="admin">
+                    </div>
+                    <div class="input-field">
+                        <label>Password</label>
+                        <input type="password" id="admin-pass" value="admin123">
+                    </div>
+                    <button onclick="app.loginAdmin()" class="btn btn-danger btn-full">Masuk Dashboard</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN 3: USER DASHBOARD -->
+        <section id="user-dashboard">
+            <div class="dashboard-welcome">
+                <h2>Halo, <span id="user-name">Pelanggan</span> 👋</h2>
+                <p>Blok: <span id="user-block">-</span></p>
+            </div>
+
+            <!-- KARTU BUKTI TAGIHAN DARI ADMIN (BARU) -->
+            <div class="card bill-attachment-card">
+                <h3>Bukti Tagihan / Foto Meter</h3>
+                <p class="text-hint">Dokumen ini dikirim oleh Admin sebagai lampiran tagihan.</p>
+                <div class="bill-img-container">
+                    <!-- Placeholder jika admin tidak upload -->
+                    <img id="bill-attachment-img" src="https://via.placeholder.com/400x200?text=Foto+Tagihan+Belum+Ada" alt="Bukti Tagihan">
+                </div>
+            </div>
+
+            <div class="card bill-highlight">
+                <div class="bill-header">
+                    <span>Tagihan Bulan Ini</span>
+                    <span id="bill-period" class="badge">Periode -</span>
+                </div>
+                <div class="bill-amount">
+                    <span id="bill-amount-display">Rp 0</span>
+                </div>
+                <div class="bill-info">
+                    <p>Jatuh Tempo: <span id="bill-due">-</span></p>
+                    <p id="status-text" class="status-badge unpaid">Belum Bayar</p>
+                </div>
+            </div>
+
+            <div id="payment-area" class="card">
+                <h3>Metode Pembayaran</h3>
+                <div class="payment-grid">
+                    <div class="payment-option" onclick="app.selectPayment(this, 'BCA')">BCA</div>
+                    <div class="payment-option" onclick="app.selectPayment(this, 'DANA')">DANA</div>
+                    <div class="payment-option" onclick="app.selectPayment(this, 'QRIS')">QRIS</div>
+                    <div class="payment-option" onclick="app.selectPayment(this, 'TUNAI')">TUNAI (Kantor)</div>
+                </div>
+
+                <div id="payment-details" class="hidden payment-detail">
+                    <div id="detail-content" class="detail-box"></div>
+                    
+                    <div id="upload-area" class="input-field mt-2">
+                        <label>Upload Bukti Bayar (Max 1MB)</label>
+                        <input type="file" id="proof-file" accept="image/*">
+                    </div>
+                    
+                    <button id="btn-confirm" onclick="app.submitPayment()" class="btn btn-success btn-full mt-2">Konfirmasi Pembayaran</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Riwayat Pembayaran</h3>
+                <div class="table-responsive">
+                    <table id="history-table">
+                        <thead>
+                            <tr><th>Tanggal</th><th>Metode</th><th>Jumlah</th><th>Status</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN 4: ADMIN DASHBOARD -->
+        <section id="admin-dashboard">
+            <div class="admin-header">
+                <h2>Admin Panel</h2>
+                <button onclick="app.openModal()" class="btn btn-primary">+ Tambah Pelanggan</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Pelanggan</h3>
+                    <p class="stat-num" id="stat-users">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Verifikasi Pending</h3>
+                    <p class="stat-num warning" id="stat-pending">Rp 0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Pemasukan</h3>
+                    <p class="stat-num success" id="stat-revenue">Rp 0</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Data Pelanggan & Bukti</h3>
+                <p class="text-hint">Klik tombol WA untuk mengirim pengingat jatuh tempo satu per satu.</p>
+                <div class="table-responsive">
+                    <table id="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama</th>
+                                <th>Tagihan</th>
+                                <th>Status</th>
+                                <th>Bukti Bayar</th>
+                                <th>Ingatkan (WA)</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN 5: KONTAK -->
+        <section id="contact">
+            <div class="card contact-card">
+                <h2 class="text-center">Hubungi Kami</h2>
+                <p class="text-center">Ada pertanyaan atau keluhan? Kirim pesan Anda.</p>
+                <div class="input-field">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="contact-name">
+                </div>
+                <div class="input-field">
+                    <label>Pesan</label>
+                    <textarea id="contact-msg" rows="4"></textarea>
+                </div>
+                <button onclick="app.sendContact()" class="btn btn-primary btn-full">Kirim Pesan</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 CV SUMBER MANUNGGAL ABADI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Tambah Pelanggan (Update: Ada Input Upload Foto Meter) -->
+    <div id="modal-add" class="modal hidden">
+        <div class="modal-content">
+            <h3>Tambah Pelanggan Baru</h3>
+            <div class="input-field"><label>ID Pelanggan</label><input type="text" id="new-id"></div>
+            <div class="input-field"><label>Nama</label><input type="text" id="new-name"></div>
+            <div class="input-field"><label>No HP (Wajib untuk WA)</label><input type="tel" id="new-phone" placeholder="08xxx"></div>
+            <div class="input-field"><label>Blok Rumah</label><input type="text" id="new-block"></div>
+            <div class="input-field"><label>Tagihan (Rp)</label><input type="number" id="new-amount"></div>
+            <div class="input-field"><label>Periode</label><input type="month" id="new-period"></div>
+            <div class="input-field"><label>Jatuh Tempo</label><input type="date" id="new-due"></div>
+            
+            <!-- BARU: Upload Foto Meter/Tagihan -->
+            <div class="input-field">
+                <label>Lampiran Foto Meter/Tagihan (Opsional)</label>
+                <input type="file" id="new-bill-img" accept="image/*">
+                <small style="color: #666; font-size: 0.8rem;">gunakan gambar kecil (<800KB)</small>
+            </div>
+
+            <div class="modal-actions">
+                <button onclick="app.closeModal()" class="btn btn-outline">Batal</button>
+                <button onclick="app.addCustomer()" class="btn btn-primary">Simpan</button>
+            </div>
+        </div>
     </div>
 
-    <form id="paymentForm" class="form">
-
-        <div class="row">
-            <div class="input-group">
-                <label>Nama Pelanggan</label>
-                <input type="text" required placeholder="Nama lengkap">
-            </div>
-
-            <div class="input-group">
-                <label>Blok Rumah</label>
-                <input type="text" required placeholder="Blok A No. 12">
-            </div>
+    <!-- Modal Pengecek Gambar Bukti Bayar -->
+    <div id="img-modal" class="modal hidden">
+        <div class="img-modal-content">
+            <button onclick="app.closeImageModal()" class="btn-close">✕</button>
+            <img id="proof-image-view" src="" alt="Bukti Pembayaran">
         </div>
-
-        <div class="row">
-            <div class="input-group">
-                <label>Periode Tagihan</label>
-                <input type="month" required>
-            </div>
-
-            <div class="input-group">
-                <label>Jatuh Tempo Pembayaran</label>
-                <input type="date" required>
-            </div>
-        </div>
-
-        <div class="input-group">
-            <label>Total Pembayaran (Rp)</label>
-            <input type="number" required placeholder="Contoh: 150000">
-        </div>
-
-        <div class="input-group">
-            <label>Metode Pembayaran</label>
-            <select required>
-                <option value="">-- Pilih Metode --</option>
-                <optgroup label="Bank">
-                    <option>BCA</option>
-                    <option>BRI</option>
-                    <option>BNI</option>
-                    <option>Mandiri</option>
-                </optgroup>
-                <optgroup label="E-Wallet">
-                    <option>DANA</option>
-                    <option>OVO</option>
-                    <option>GoPay</option>
-                    <option>ShopeePay</option>
-                </optgroup>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>Upload Bukti Pembayaran</label>
-            <input type="file" accept="image/*" required onchange="previewImage(event)">
-            <div class="preview" id="preview"></div>
-        </div>
-
-        <button type="submit">KIRIM PEMBAYARAN</button>
-
-    </form>
-
-    <div class="footer">
-        © 2026 CV Sumber Manunggal Abadi • Sistem Pembayaran Air WTP
     </div>
-</div>
 
-<script src="script.js"></script>
+    <!-- Toast -->
+    <div id="toast-container"></div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
